@@ -2,3 +2,9 @@ opencv-python
 pytesseract
 numpy
 Pillow
+matplotlib
+pandas
+torch
+seaborn
+tensorflow
+scikit-learn

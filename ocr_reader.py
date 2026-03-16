@@ -14,8 +14,7 @@ def extract_time_labels(image, x_start, x_end, y_top, y_bottom):
     gray = cv2.cvtColor(region, cv2.COLOR_BGR2GRAY)
     scale = 5
     scaled = cv2.resize(gray, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
-    thresh = int(np.mean(scaled) * 0.7)
-    _, binary = cv2.threshold(scaled, thresh, 255, cv2.THRESH_BINARY)
+    _, binary = cv2.threshold(scaled, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     data = pytesseract.image_to_data(
         binary,
@@ -36,7 +35,6 @@ def extract_time_labels(image, x_start, x_end, y_top, y_bottom):
             raw.append((data["top"][i] // scale + y_top, hour))
 
     raw.sort(key=lambda p: p[0])
-    # Keep only strictly increasing y and hour values
     if not raw:
         return []
     result = [raw[0]]
